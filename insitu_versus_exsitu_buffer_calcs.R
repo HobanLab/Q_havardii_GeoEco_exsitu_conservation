@@ -325,14 +325,14 @@ geo_map <- leaflet() %>%
 		fillOpacity = 0, color = "#757575", weight = 1.5, opacity = 1) %>%
 	## in situ buffers
 	addPolygons(data = create.buffers(insitu,50000,wgs.proj,wgs.proj),
-		smoothFactor = 0.5,	weight = 2, color = "#de5f5f", fillOpacity = 0.35) %>%
+		smoothFactor = 0.5,	weight = 6, color = "#de5f5f", fillOpacity = 0.35) %>%
 	## in situ points
 	addCircleMarkers(data = insitu, lng = ~longitude, lat = ~latitude,
 		popup = ~paste("In situ:", Pop),
 		radius = 4, fillOpacity = 0.9, stroke = F, color = "#de5f5f") %>%
 	## ex situ buffers
 	addPolygons(data = create.buffers(exsitu,50000,wgs.proj,wgs.proj),
-		smoothFactor = 0.5, weight = 2, color = "#2426bd", fillOpacity = 0.35) %>%
+		smoothFactor = 0.5, weight = 1, color = "#2426bd", fillOpacity = 0.35) %>%
 	## ex situ points
 	addCircleMarkers(data = exsitu, lng = ~longitude, lat = ~latitude,
 		popup = ~paste("Ex situ:", Pop),
@@ -380,7 +380,7 @@ ecol4_pal <- colorFactor(palette = "Set2",domain = ecol4_sel@data$US_L4NAME,
 
 # comment out/uncomment based on which level you're mapping
 level <- "III"
-level <- "IV"
+#level <- "IV"
 
 # create map to visualze species distribution and ecoregions
 # 	uncomment the section for Level III or Level IV ecoregions, depending
@@ -391,13 +391,13 @@ eco_map <- leaflet() %>%
 		options = providerTileOptions(maxZoom = 10)) %>%
 	addPolygons(
 	## EPA Level III ecoregions
-		#data = ecol3_sel,
-		#fillColor = ~ecol3_pal(ecol3_sel@data$US_L3NAME), fillOpacity = 0.6,
-		#color = ~ecol3_pal(ecol3_sel@data$US_L3NAME), weight = 1, opacity = 1) %>%
+		data = ecol3_sel,
+		fillColor = ~ecol3_pal(ecol3_sel@data$US_L3NAME), fillOpacity = 0.6,
+		color = ~ecol3_pal(ecol3_sel@data$US_L3NAME), weight = 1, opacity = 1) %>%
 	## EPA Level IV ecoregions
-		data = ecol4_sel,
-		fillColor = ~ecol4_pal(ecol4_sel@data$US_L4NAME), fillOpacity = 0.6,
-		color = ~ecol4_pal(ecol4_sel@data$US_L4NAME), weight = 0.5, opacity = 1) %>%
+		#data = ecol4_sel,
+		#fillColor = ~ecol4_pal(ecol4_sel@data$US_L4NAME), fillOpacity = 0.6,
+		#color = ~ecol4_pal(ecol4_sel@data$US_L4NAME), weight = 0.5, opacity = 1) %>%
 	## state boundaries
 	addPolygons(data = state_bound,
 		fillOpacity = 0, color = "#969696", weight = 1.5, opacity = 1) %>%
@@ -424,5 +424,6 @@ eco_map <- leaflet() %>%
 eco_map
 
 # save map
-#htmlwidgets::saveWidget(eco_map, file = "Quercus_havardii_ecoregions_L3.html")
+htmlwidgets::saveWidget(eco_map, file = "Quercus_havardii_ecoregions_L3.html")
+	# level IV is too big so can't save
 #htmlwidgets::saveWidget(eco_map, file = "Quercus_havardii_ecoregions_L4.html")
