@@ -14,7 +14,7 @@
 	## These data are presented in Fredlock, Zumwalde, et al. (2021)
 
 ### INPUTS:
-?????	# In situ points: curated by Sean Hoban lab.
+	# In situ points: curated by Sean Hoban lab.
 	# Ex situ points: source localities of the seedlings used in the genetic
 	#		study, from collection trips in 2017 and 2019.
 	## All points are in one file (BeckHob_QHOccur_Vetted_ExSituMarked.csv),
