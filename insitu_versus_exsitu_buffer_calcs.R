@@ -315,6 +315,11 @@ write.csv(summary_tbl, file.path(local_dir,
 # F) Map points and buffers
 ################################################################################
 
+# read in csv with list of insitu coordinates sampled for leaf tissue
+insitu_samples <- read.csv(file.path(local_dir,"Zumwalde_QH_GeneticSampleLocations.csv"),
+	as.is=T, na.strings=c("","NA"))
+insitu_samples_mark <- insitu_samples %>% filter(Tree.DNA.Sampled > 0)
+
 # create map to visualize buffer and point data
 geo_map <- leaflet() %>%
 	## background
@@ -333,6 +338,9 @@ geo_map <- leaflet() %>%
 	## ex situ buffers
 	addPolygons(data = create.buffers(exsitu,50000,wgs.proj,wgs.proj),
 		smoothFactor = 0.5, weight = 1, color = "#2426bd", fillOpacity = 0.35) %>%
+	## in situ sampled points
+	addCircleMarkers(data = insitu_samples, lng = ~Longitude, lat = ~Latitude,
+		radius = 3, fillOpacity = 0.9, stroke = F, color = "yellow") %>%
 	## ex situ points
 	addCircleMarkers(data = exsitu, lng = ~longitude, lat = ~latitude,
 		popup = ~paste("Ex situ:", Pop),
@@ -342,8 +350,9 @@ geo_map <- leaflet() %>%
 		position = "topright") %>%
 	addLegend(labels =
 		c(paste0("Geographic range (occurrence points and 50 km buffers)"),
-			paste0("Populations sampled for ex situ (collection locations and 50 km buffers)")),
-		colors = c("#de5f5f","#2426bd"), title = "Legend",
+			paste0("Populations sampled for ex situ (collection locations and 50 km buffers)"),
+			paste0("Populations sampled for genetic data, but no seeds collected for ex situ")),
+		colors = c("#de5f5f","#2426bd","yellow"), title = "Legend",
 		position = "bottomright", opacity = 0.8) %>%
 	addScaleBar(position = "bottomleft",
 		options = scaleBarOptions(maxWidth = 150)) %>%
@@ -353,7 +362,8 @@ geo_map <- leaflet() %>%
 geo_map
 
 # save map
-htmlwidgets::saveWidget(geo_map, file = "Quercus_havardii_buffer_map_50km.html")
+#htmlwidgets::saveWidget(geo_map, file = "Quercus_havardii_buffer_map_50km.html")
+htmlwidgets::saveWidget(geo_map, file = "Quercus_havardii_buffer_map_50km_AddedInSituSamples.html")
 
 ################################################################################
 # G) Map ecoregions
